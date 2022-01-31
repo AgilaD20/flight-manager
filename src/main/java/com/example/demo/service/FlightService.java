@@ -12,11 +12,14 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Exception.FlightNotFoundException;
+import com.example.demo.model.Airline;
 import com.example.demo.model.Flight;
 import com.example.demo.model.Seat;
+import com.example.demo.repository.AirlineRepository;
 import com.example.demo.repository.FlightRepository;
 import com.example.demo.repository.SeatRepository;
 import com.example.demo.ui.FlightDTO;
+import com.example.demo.ui.FlightDTOList;
 import com.example.demo.ui.FlightSearchRequest;
 import com.example.demo.ui.UpdateSeatDTO;
 
@@ -26,18 +29,34 @@ public class FlightService {
 	private final FlightRepository flightRepository;
 	private final SeatRepository seatRepository;
 	private final ModelMapper modelMapper;
+	private final AirlineRepository airlineRepository;
 
-	public FlightService(FlightRepository flightRepository, SeatRepository seatRepository, ModelMapper modelMapper) {
+	public FlightService(FlightRepository flightRepository, SeatRepository seatRepository, ModelMapper modelMapper, AirlineRepository airlineRepository) {
 		this.flightRepository = flightRepository;
 		this.seatRepository = seatRepository;
 		this.modelMapper = modelMapper;
+		this.airlineRepository = airlineRepository;
 	}
 	
 	
- public List<Flight> getAllFlightsWithCriteria(FlightSearchRequest request)
+ public FlightDTOList getAllFlightsWithCriteria(FlightSearchRequest request)
  {
-	 //System.out.println(request.getFromLocation()+" "+request.getDestination()+" "+Date.valueOf(request.getDepartureTime())+" "+Date.valueOf(request.getArrivalTime()));
-	 return flightRepository.getAllFlightByCriteria(request.getFromLocation(), request.getDestination(), request.getDepartureTime(),request.getArrivalTime());
+	 System.out.println(request.getFromLocation()+" "+request.getDestination()+" "+request.getDepartureDate());
+	 List<Flight> flights = flightRepository.getAllFlightByCriteria(request.getFromLocation(), request.getDestination(), request.getDepartureDate());
+	 if(flights.isEmpty())
+		{
+			throw new FlightNotFoundException("Flight not found for the given criteria. Please refine the criteria");
+		}
+		
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		List<FlightDTO> flightList = flights.stream().map(f->{
+			FlightDTO dto = modelMapper.map(f, FlightDTO.class);
+			dto.setAirlineName(f.getAirline().getAirlineName());
+			return dto;}).collect(Collectors.toList());
+		FlightDTOList flightDTOList = new FlightDTOList(flightList);
+		System.out.println(flightDTOList);
+	 
+	 return flightDTOList;
  }
 
 
@@ -53,11 +72,11 @@ public void updateSeatsForBooking(UpdateSeatDTO request) {
 		throw  new FlightNotFoundException("Flight with the given flightid is not present");
 	}
 	Integer availableCount = flight.get().getAvailableSeats();
-	System.out.println(availableCount);
+	
 	List<Seat> availableSeats = seatRepository.getAvailableSeats(request.getFlighId());
-	System.out.println(availableSeats);
+	
 	List<String> availableSeatNumbers = availableSeats.stream().map(s->s.getSeatNumber()).collect(Collectors.toList());
-	System.out.println(availableSeatNumbers);
+	
 	
 	if(!availableSeatNumbers.containsAll(request.getSeatNumbers()))
 	{
@@ -81,6 +100,29 @@ public FlightDTO getFlightDetails(Integer flightId) {
 	FlightDTO flightDTO = modelMapper.map(flight.get(), FlightDTO.class);
 	return flightDTO;
 }
+
+
+public String getSeatById(Integer flightId) {
+	return seatRepository.getAvailableSeats(flightId).stream().map(s->s.getSeatNumber()).collect(Collectors.joining("|"));
+}
+
+@Transactional
+public void addSeatsofFlight(UpdateSeatDTO request) {
+Optional<Flight> flight = flightRepository.findById(request.getFlighId());
+
+
+	if(!flight.isPresent())
+	{
+		throw  new FlightNotFoundException("Flight with the given flightid is not present");
+	}
+	Integer availableCount = flight.get().getAvailableSeats();
+	request.getSeatNumbers().stream().forEach(s-> seatRepository.addSeatsback(request.getFlighId(), s));
+	flightRepository.UpdateAvailableSeats(availableCount+request.getSeatCount(),request.getFlighId());
+	
+}
+
+
+
 
 
 	

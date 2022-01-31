@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -40,10 +40,9 @@ public class Flight {
 	private Double price;
 	@Column(name="TRIPTYPE")
 	private TripType tripType;
-	@Column(name="DEPARTURETIME")
-	private LocalDateTime departureTime;
-	@Column(name="ARRIVALTIME")
-	private LocalDateTime arrivalTime;
+	@Column(name="DEPARTUREDATE")
+	private LocalDate departureDate;
+	
 	@Column(name="ISBLOCKED")
 	private Boolean isBlocked;
 	/*

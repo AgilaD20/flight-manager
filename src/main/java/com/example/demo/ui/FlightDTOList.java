@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FlightDTOList {
 	
+	@Override
+	public String toString() {
+		return "FlightDTOList [flightList=" + flightList + "]";
+	}
+
 	private List<FlightDTO> flightList;
 	
 	public FlightDTOList(List<FlightDTO> flightList) {

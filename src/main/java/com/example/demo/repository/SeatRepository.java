@@ -18,5 +18,11 @@ public interface SeatRepository extends JpaRepository<Seat,Integer> {
 	
 	@Query(value="select * from seat where isbooked=0 and flightId=:flightId",nativeQuery=true)
 	public List<Seat> getAvailableSeats(Integer flightId);
+	
+	@Modifying
+	@Query(value="update seat set isbooked=0 where flightid=:flightId and seatnumber=:SeatNumber",nativeQuery=true)
+	public void addSeatsback(Integer flightId, String SeatNumber);
+	
+	
 
 }

@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,5 +42,11 @@ public class Ticket {
 	
 	@Column(name="SEATNUMBERS")
 	private String seatNumbers;
+	
+	@Column(name="isCancelled")
+	private Boolean isCancelled;
+	
+	@Column(name="createdtimestamp")
+	private LocalDateTime createdTimeStamp;
 	
 }

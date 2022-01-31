@@ -1,6 +1,6 @@
 package com.example.demo.ui;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.example.demo.model.TripType;
 
@@ -19,6 +19,8 @@ public class FlightDTO {
 
 	private String flightName;
 	
+	private Integer flightID;
+	
 	private Integer availableSeats;
 	
 	private String fromLocation;
@@ -29,9 +31,18 @@ public class FlightDTO {
 	
 	private TripType tripType;
 	
-	private LocalDateTime departureTime;
+	private LocalDate departureDate;
 	
-	private LocalDateTime arrivalTime;
+	private String airlineName;
+
+	@Override
+	public String toString() {
+		return "FlightDTO [flightName=" + flightName + ", availableSeats=" + availableSeats + ", fromLocation="
+				+ fromLocation + ", destination=" + destination + ", price=" + price + ", tripType=" + tripType
+				+ ", departureDate=" + departureDate + ", airlineName=" + airlineName + "]";
+	}
+	
+	
 	
 
 }

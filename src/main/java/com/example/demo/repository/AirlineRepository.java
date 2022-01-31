@@ -14,5 +14,7 @@ public interface AirlineRepository extends JpaRepository<Airline,Integer> {
 	@Modifying
 	@Query(value="delete from airline where airlinename=:airlinename",nativeQuery=true)
 	void deleteByairlineId(String airlinename);
+	
+	
 
 }
