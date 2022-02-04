@@ -1,12 +1,13 @@
 package com.example.demo.model;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,22 +19,22 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Seat {
+@Table(name="seatmapper")
+public class SeatMapper {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="seatid")
+	@Column(name="seatmapperid")
 	private Integer seatId;
 	
-	@ManyToOne
-	@JoinColumn(name="flightid")
-	private Flight flight;
+	@Column(name="flightid")
+	private Integer flightId;
 	
 	@Column(name="seatnumber")
 	private String seatNumber;
 	
-	@Column(name="isbooked")
-	private Boolean isBooked;
+	@Column(name="departuredate")
+	private LocalDate departureDate;
 	
 
 }

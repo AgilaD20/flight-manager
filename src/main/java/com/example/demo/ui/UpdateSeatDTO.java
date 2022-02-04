@@ -1,5 +1,6 @@
 package com.example.demo.ui;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -18,5 +19,7 @@ public class UpdateSeatDTO {
 	private List<String> seatNumbers;
 
 	private Integer flighId;
+	
+	private LocalDate departureDate;
 
 }

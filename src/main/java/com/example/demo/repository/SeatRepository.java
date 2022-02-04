@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.model.Flight;
 import com.example.demo.model.Seat;
 
 @Repository
@@ -22,6 +23,9 @@ public interface SeatRepository extends JpaRepository<Seat,Integer> {
 	@Modifying
 	@Query(value="update seat set isbooked=0 where flightid=:flightId and seatnumber=:SeatNumber",nativeQuery=true)
 	public void addSeatsback(Integer flightId, String SeatNumber);
+
+	@Query
+	public List<Seat> findByFlight(Flight flight);
 	
 	
 

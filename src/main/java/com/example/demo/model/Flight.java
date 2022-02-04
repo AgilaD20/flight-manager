@@ -38,13 +38,12 @@ public class Flight {
 	private String destination;
 	@Column(name="PRICE")
 	private Double price;
-	@Column(name="TRIPTYPE")
-	private TripType tripType;
 	@Column(name="DEPARTUREDATE")
 	private LocalDate departureDate;
-	
 	@Column(name="ISBLOCKED")
 	private Boolean isBlocked;
+	@Column(name="ENDDATE")
+	private LocalDate endDate;
 	/*
 	 * @Column(name="seats") private String seats;
 	 */
@@ -52,6 +51,9 @@ public class Flight {
 	@ManyToOne
 	@JoinColumn(name="airlineid")
 	private Airline airline;
+	
+	@OneToMany(mappedBy="flight")
+	private List<Schedules> schedules;
 	
 
 	 @OneToMany(mappedBy="flight")

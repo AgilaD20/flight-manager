@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Flight;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
