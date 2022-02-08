@@ -12,19 +12,15 @@ spring:
   application:
     name: flight-manager
   datasource:
-    password: password1
-    url: jdbc:mysql://flightapp.c8oyd2gnbiym.us-east-1.rds.amazonaws.com/flightapp
-    username: admin
-   #driver-class-name: com.mysql.jdbc.Driver
+    password: pass@word1
+    url: jdbc:mysql://localhost:3306/flightapp
+    username: root
+ #driver-class-name: com.mysql.jdbc.Driver
   jpa:
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
-  profiles:
-    active:
-    - staging
-  
 jwt:
   secret: access**access
 
